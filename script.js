@@ -342,83 +342,16 @@
   const soundLabel = document.getElementById('soundLabel');
   const musicToast = document.getElementById('musicToast');
 
-  const NOTE_FREQS = {
-    'E2': 82.41, 'F2': 87.31, 'G2': 98.00, 'A2': 110.00, 'B2': 123.47,
-    'C3': 130.81, 'D3': 146.83, 'E3': 164.81, 'F3': 174.61, 'G3': 196.00, 'A3': 220.00, 'B3': 246.94,
-    'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00, 'A4': 440.00, 'B4': 493.88,
-    'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00, 'B5': 987.77,
-    'C6': 1046.50
-  };
-
-  // Romantic Lullaby in C Major (8 measures loop)
-  const ROMANTIC_SCORE = [
-    { t: 0.0, note: 'C3', dur: 1.4, vel: 0.22 },
-    { t: 0.4, note: 'G3', dur: 1.0, vel: 0.15 },
-    { t: 0.8, note: 'C4', dur: 1.0, vel: 0.16 },
-    { t: 1.2, note: 'E4', dur: 1.0, vel: 0.18 },
-    { t: 0.0, note: 'E5', dur: 1.4, vel: 0.26 },
-    { t: 1.2, note: 'G5', dur: 1.2, vel: 0.28 },
-    { t: 1.6, note: 'G4', dur: 1.0, vel: 0.16 },
-    { t: 2.0, note: 'E4', dur: 1.0, vel: 0.15 },
-    { t: 2.4, note: 'C4', dur: 1.0, vel: 0.15 },
-    { t: 2.4, note: 'E5', dur: 1.2, vel: 0.24 },
-
-    { t: 3.2, note: 'B2', dur: 1.4, vel: 0.22 },
-    { t: 3.6, note: 'G3', dur: 1.0, vel: 0.15 },
-    { t: 4.0, note: 'D4', dur: 1.0, vel: 0.16 },
-    { t: 4.4, note: 'G4', dur: 1.0, vel: 0.18 },
-    { t: 3.2, note: 'D5', dur: 1.4, vel: 0.26 },
-    { t: 4.4, note: 'G5', dur: 1.2, vel: 0.28 },
-    { t: 4.8, note: 'B4', dur: 1.0, vel: 0.16 },
-    { t: 5.6, note: 'D5', dur: 1.2, vel: 0.24 },
-
-    { t: 6.4, note: 'A2', dur: 1.4, vel: 0.22 },
-    { t: 6.8, note: 'E3', dur: 1.0, vel: 0.15 },
-    { t: 7.2, note: 'C4', dur: 1.0, vel: 0.16 },
-    { t: 7.6, note: 'E4', dur: 1.0, vel: 0.18 },
-    { t: 6.4, note: 'C5', dur: 1.4, vel: 0.26 },
-    { t: 7.6, note: 'E5', dur: 1.2, vel: 0.28 },
-    { t: 8.8, note: 'A5', dur: 1.2, vel: 0.26 },
-
-    { t: 9.6, note: 'E2', dur: 1.4, vel: 0.20 },
-    { t: 10.4, note: 'E3', dur: 1.0, vel: 0.16 },
-    { t: 9.6, note: 'B4', dur: 2.0, vel: 0.26 },
-    { t: 12.0, note: 'G4', dur: 1.2, vel: 0.22 },
-
-    { t: 12.8, note: 'F2', dur: 1.4, vel: 0.22 },
-    { t: 13.6, note: 'A3', dur: 1.0, vel: 0.16 },
-    { t: 12.8, note: 'A4', dur: 1.0, vel: 0.24 },
-    { t: 13.6, note: 'C5', dur: 1.0, vel: 0.26 },
-    { t: 14.4, note: 'F5', dur: 1.4, vel: 0.28 },
-
-    { t: 16.0, note: 'E2', dur: 1.4, vel: 0.22 },
-    { t: 16.0, note: 'E5', dur: 1.4, vel: 0.26 },
-    { t: 17.2, note: 'D5', dur: 1.0, vel: 0.24 },
-    { t: 18.4, note: 'C5', dur: 1.2, vel: 0.24 },
-
-    { t: 19.2, note: 'D2', dur: 1.4, vel: 0.22 },
-    { t: 20.0, note: 'A4', dur: 1.0, vel: 0.24 },
-    { t: 20.8, note: 'D5', dur: 1.4, vel: 0.28 },
-
-    { t: 22.4, note: 'G2', dur: 1.4, vel: 0.22 },
-    { t: 22.4, note: 'B4', dur: 1.4, vel: 0.24 },
-    { t: 23.6, note: 'C5', dur: 0.8, vel: 0.24 },
-    { t: 24.2, note: 'D5', dur: 1.2, vel: 0.28 }
-  ];
-
-  const LOOP_DURATION = 25.6;
+  const volumeSlider = document.getElementById('volumeSlider');
+  const volIcon = document.getElementById('volIcon');
 
   function initAudio() {
     if (!audioCtx) {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (AudioContextClass) {
         audioCtx = new AudioContextClass();
-        musicMasterGain = audioCtx.createGain();
-        musicMasterGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-        musicMasterGain.connect(audioCtx.destination);
-
         sfxMasterGain = audioCtx.createGain();
-        sfxMasterGain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+        sfxMasterGain.gain.setValueAtTime(0.35, audioCtx.currentTime);
         sfxMasterGain.connect(audioCtx.destination);
       }
     }
@@ -427,67 +360,47 @@
     }
   }
 
-  function playMusicBoxNote(freq, schedTime, duration = 1.4, velocity = 0.2) {
-    if (!audioCtx || !musicMasterGain) return;
-
-    const osc = audioCtx.createOscillator();
-    const oscOvertone = audioCtx.createOscillator();
-    const filter = audioCtx.createBiquadFilter();
-    const noteGain = audioCtx.createGain();
-
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(freq, schedTime);
-
-    oscOvertone.type = 'triangle';
-    oscOvertone.frequency.setValueAtTime(freq * 2, schedTime);
-
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(2200, schedTime);
-
-    noteGain.gain.setValueAtTime(0.0001, schedTime);
-    noteGain.gain.linearRampToValueAtTime(velocity, schedTime + 0.015);
-    noteGain.gain.exponentialRampToValueAtTime(0.0001, schedTime + duration);
-
-    osc.connect(filter);
-    oscOvertone.connect(filter);
-    filter.connect(noteGain);
-    noteGain.connect(musicMasterGain);
-
-    osc.start(schedTime);
-    oscOvertone.start(schedTime);
-    osc.stop(schedTime + duration);
-    oscOvertone.stop(schedTime + duration);
+  function applyVolume(vol) {
+    if (bgAudioEl) {
+      bgAudioEl.volume = Math.max(0, Math.min(1, vol));
+    }
+    if (volIcon) {
+      if (vol <= 0) volIcon.textContent = '🔇';
+      else if (vol < 0.5) volIcon.textContent = '🔉';
+      else volIcon.textContent = '🔊';
+    }
   }
 
-  let musicStartTime = 0;
-  let nextScoreIndex = 0;
-  let currentLoopOffset = 0;
+  const chorusJumpBtn = document.getElementById('chorusJumpBtn');
 
-  function runScheduler() {
-    if (!audioCtx || !isMusicPlaying || isMuted) return;
-
-    const lookahead = 0.35;
-    const currentTime = audioCtx.currentTime;
-
-    while (true) {
-      const noteData = ROMANTIC_SCORE[nextScoreIndex];
-      const noteTime = musicStartTime + currentLoopOffset + noteData.t;
-
-      if (noteTime < currentTime + lookahead) {
-        const freq = NOTE_FREQS[noteData.note];
-        if (freq && noteTime >= currentTime - 0.05) {
-          playMusicBoxNote(freq, Math.max(currentTime, noteTime), noteData.dur, noteData.vel);
-        }
-
-        nextScoreIndex++;
-        if (nextScoreIndex >= ROMANTIC_SCORE.length) {
-          nextScoreIndex = 0;
-          currentLoopOffset += LOOP_DURATION;
-        }
-      } else {
-        break;
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      applyVolume(val);
+      if (val > 0 && !isMusicPlaying) {
+        startBackgroundMusic();
       }
-    }
+    });
+  }
+
+  if (chorusJumpBtn) {
+    chorusJumpBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      initAudio();
+      if (bgAudioEl) {
+        bgAudioEl.currentTime = 0; // Replay the iconic chorus from the beginning
+        if (bgAudioEl.paused) {
+          startBackgroundMusic();
+        }
+      }
+      playSparkleSound();
+      if (musicToast) {
+        const toastSpan = musicToast.querySelector('span');
+        if (toastSpan) toastSpan.textContent = '💖 Now Playing: "Vaaroon" (Chorus) 💕';
+        musicToast.classList.add('show');
+        setTimeout(() => musicToast.classList.remove('show'), 3200);
+      }
+    });
   }
 
   function startBackgroundMusic() {
@@ -495,30 +408,27 @@
     isMusicPlaying = true;
     isMuted = false;
 
-    if (bgAudioEl && bgAudioEl.src && !bgAudioEl.error) {
+    if (bgAudioEl) {
+      // Full volume as requested by user
+      const targetVol = volumeSlider ? parseFloat(volumeSlider.value) : 1.0;
+      applyVolume(targetVol > 0 ? targetVol : 1.0);
+      if (volumeSlider && targetVol <= 0) volumeSlider.value = 1.0;
+
       const p = bgAudioEl.play();
-      if (p !== undefined) p.catch(() => {});
-    }
-
-    if (audioCtx && musicMasterGain) {
-      musicStartTime = audioCtx.currentTime;
-      nextScoreIndex = 0;
-      currentLoopOffset = 0;
-      musicMasterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-      musicMasterGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-      musicMasterGain.gain.exponentialRampToValueAtTime(0.28, audioCtx.currentTime + 1.5);
-
-      clearInterval(musicSchedulerTimer);
-      musicSchedulerTimer = setInterval(runScheduler, 100);
+      if (p !== undefined) {
+        p.catch((err) => {
+          console.log('Audio autoplay prevented, awaiting user gesture:', err);
+        });
+      }
     }
 
     if (soundToggleBtn) soundToggleBtn.classList.add('playing');
     if (soundIcon) soundIcon.textContent = '🎵';
-    if (soundLabel) soundLabel.textContent = 'Music: Playing';
+    if (soundLabel) soundLabel.textContent = 'Vaaroon: Playing';
 
     if (musicToast) {
       musicToast.classList.add('show');
-      setTimeout(() => musicToast.classList.remove('show'), 3200);
+      setTimeout(() => musicToast.classList.remove('show'), 3500);
     }
   }
 
@@ -528,16 +438,9 @@
 
     if (bgAudioEl) bgAudioEl.pause();
 
-    if (audioCtx && musicMasterGain) {
-      musicMasterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-      musicMasterGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6);
-    }
-
-    clearInterval(musicSchedulerTimer);
-
     if (soundToggleBtn) soundToggleBtn.classList.remove('playing');
     if (soundIcon) soundIcon.textContent = '🔇';
-    if (soundLabel) soundLabel.textContent = 'Music: Paused';
+    if (soundLabel) soundLabel.textContent = 'Vaaroon: Paused';
   }
 
   function toggleMusic() {
@@ -596,17 +499,255 @@
     });
   }
 
-  function onFirstUserInteraction() {
-    if (hasUserInteracted) return;
-    hasUserInteracted = true;
-    startBackgroundMusic();
-    ['click', 'touchstart', 'keydown'].forEach(evt => {
-      window.removeEventListener(evt, onFirstUserInteraction);
+  const autoplayBanner = document.getElementById('autoplayBanner');
+  const bannerClose = document.getElementById('bannerClose');
+
+  if (bannerClose) {
+    bannerClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (autoplayBanner) {
+        autoplayBanner.classList.add('dismissed');
+      }
     });
   }
-  ['click', 'touchstart', 'keydown'].forEach(evt => {
-    window.addEventListener(evt, onFirstUserInteraction, { once: false, passive: true });
+
+  if (autoplayBanner) {
+    autoplayBanner.addEventListener('click', () => {
+      ensureMusicPlaying();
+      autoplayBanner.classList.add('dismissed');
+    });
+  }
+
+  function ensureMusicPlaying() {
+    initAudio();
+    if (bgAudioEl) {
+      bgAudioEl.volume = 1.0;
+      if (volumeSlider) volumeSlider.value = '1';
+      if (volIcon) volIcon.textContent = '🔊';
+
+      const p = bgAudioEl.play();
+      if (p !== undefined) {
+        p.then(() => {
+          isMusicPlaying = true;
+          isMuted = false;
+          if (soundToggleBtn) soundToggleBtn.classList.add('playing');
+          if (soundIcon) soundIcon.textContent = '🎵';
+          if (soundLabel) soundLabel.textContent = 'Vaaroon: Playing';
+          if (autoplayBanner) autoplayBanner.classList.add('dismissed');
+        }).catch((err) => {
+          // Autoplay policy waiting for initial interaction
+          if (autoplayBanner && !autoplayBanner.classList.contains('dismissed')) {
+            autoplayBanner.classList.add('show');
+          }
+        });
+      }
+    }
+  }
+
+  // Attempt unmuted autoplay immediately on script load
+  ensureMusicPlaying();
+
+  if (bgAudioEl) {
+    bgAudioEl.addEventListener('canplay', () => {
+      if (!isMusicPlaying || bgAudioEl.paused) {
+        ensureMusicPlaying();
+      }
+    }, { once: true });
+  }
+
+  // Aggressively capture ANY user interaction (pointer movement, touch, click, scroll, keypress)
+  const INTERACTION_EVENTS = ['click', 'pointerdown', 'touchstart', 'touchend', 'mousemove', 'pointermove', 'keydown', 'scroll', 'wheel'];
+  function onFirstUserInteraction() {
+    ensureMusicPlaying();
+    if (isMusicPlaying && bgAudioEl && !bgAudioEl.paused) {
+      if (autoplayBanner) autoplayBanner.classList.add('dismissed');
+      INTERACTION_EVENTS.forEach(evt => {
+        window.removeEventListener(evt, onFirstUserInteraction);
+      });
+    }
+  }
+  INTERACTION_EVENTS.forEach(evt => {
+    window.addEventListener(evt, onFirstUserInteraction, { passive: true });
   });
+
+  // Also retry on document readiness and window load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureMusicPlaying);
+  } else {
+    ensureMusicPlaying();
+  }
+  window.addEventListener('load', ensureMusicPlaying);
+
+  // ==========================================================================
+  // Interactive Peeker Animal System ("Behind the Wall" Kawaii Creatures)
+  // ==========================================================================
+  const PEEKERS = [
+    {
+      id: 'peekerBunny',
+      bubbleId: 'bunnyBubble',
+      quotes: [
+        'Psst... Gagan! 🐰',
+        'Choose YES! 🥺💕',
+        'Sanjana made this! 🌸',
+        'You\'re doing great! ✨',
+        'Hehe, peek-a-boo! 🥕'
+      ]
+    },
+    {
+      id: 'peekerKitten',
+      bubbleId: 'kittenBubble',
+      quotes: [
+        'Click YES! 🐱❤️',
+        'Don\'t click NO! 😾',
+        'Meow! Say yes! 🐾',
+        'You two are the sweetest! 🥰',
+        'Sanjana is watching! 👀'
+      ]
+    },
+    {
+      id: 'peekerBear',
+      bubbleId: 'bearBubble',
+      quotes: [
+        'Sanjana likes you! 🐻💕',
+        'Best boy Gagan! 🐻',
+        'Big warm bear hug! 🤗',
+        'Vaaroon is playing! 🎶',
+        'Keep smiling! 😊'
+      ]
+    },
+    {
+      id: 'peekerPanda',
+      bubbleId: 'pandaBubble',
+      quotes: [
+        'Peek-a-boo! 🐼✨',
+        'Look up here! 👀',
+        'Cutest couple ever! 🐼',
+        'Sanjana really likes you! 🥰',
+        'Answer honestly! 💌'
+      ]
+    },
+    {
+      id: 'peekerFox',
+      bubbleId: 'foxBubble',
+      quotes: [
+        'You two are cute! 🦊💖',
+        'Clever fox approved! 🦊',
+        'Forever & always! 💌',
+        'Gagan + Sanjana 💕',
+        'A match made in heaven! ✨'
+      ]
+    }
+  ];
+
+  let currentActivePeeker = null;
+  let peekerRetractTimeout = null;
+  let lastPeekerIndex = -1;
+
+  function spawnPeekerHeart(x, y) {
+    const emojis = ['💖', '💕', '✨', '🌸', '❤️', '🐾'];
+    const heart = document.createElement('div');
+    heart.className = 'peeker-heart-pop';
+    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    const offsetX = (Math.random() - 0.5) * 24;
+    heart.style.left = `${Math.max(12, Math.min(window.innerWidth - 35, x + offsetX))}px`;
+    heart.style.top = `${Math.max(12, Math.min(window.innerHeight - 35, y - 24))}px`;
+    document.body.appendChild(heart);
+    setTimeout(() => {
+      if (heart.parentNode) heart.parentNode.removeChild(heart);
+    }, 1200);
+  }
+
+  function hideActivePeeker() {
+    if (currentActivePeeker) {
+      const el = document.getElementById(currentActivePeeker.id);
+      if (el) el.classList.remove('active');
+      currentActivePeeker = null;
+    }
+    if (peekerRetractTimeout) {
+      clearTimeout(peekerRetractTimeout);
+      peekerRetractTimeout = null;
+    }
+  }
+
+  function triggerRandomPeeker() {
+    // Hide current one if any
+    hideActivePeeker();
+
+    // Pick an index different from last one
+    let nextIndex;
+    do {
+      nextIndex = Math.floor(Math.random() * PEEKERS.length);
+    } while (PEEKERS.length > 1 && nextIndex === lastPeekerIndex);
+    lastPeekerIndex = nextIndex;
+
+    const peekerData = PEEKERS[nextIndex];
+    const el = document.getElementById(peekerData.id);
+    const bubble = document.getElementById(peekerData.bubbleId);
+
+    if (!el) return;
+
+    // Pick a cute speech bubble quote
+    if (bubble) {
+      const q = peekerData.quotes[Math.floor(Math.random() * peekerData.quotes.length)];
+      bubble.textContent = q;
+    }
+
+    // Pop out from behind the wall
+    el.classList.add('active');
+    currentActivePeeker = peekerData;
+
+    // Retract behind the wall after 3.8 seconds
+    peekerRetractTimeout = setTimeout(() => {
+      hideActivePeeker();
+    }, 3800);
+  }
+
+  // Setup click and interactions for each peeker
+  PEEKERS.forEach((peekerData) => {
+    const el = document.getElementById(peekerData.id);
+    const bubble = document.getElementById(peekerData.bubbleId);
+    if (!el) return;
+
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      ensureMusicPlaying();
+      playSparkleSound();
+
+      // Spawn floating hearts
+      const rect = el.getBoundingClientRect();
+      const clickX = e.clientX || (rect.left + rect.width / 2);
+      const clickY = e.clientY || (rect.top + rect.height / 2);
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => spawnPeekerHeart(clickX, clickY), i * 120);
+      }
+
+      // Cute reaction quote
+      if (bubble) {
+        const reactions = [
+          'Hehe! 🥰',
+          'Sanjana really likes Gagan! 🥰',
+          'You clicked me! 💖',
+          'Say YES to Sanjana! 💍',
+          'Super cute! ✨'
+        ];
+        bubble.textContent = reactions[Math.floor(Math.random() * reactions.length)];
+      }
+
+      // Reset auto-hide timer to give user time to read reaction
+      if (peekerRetractTimeout) clearTimeout(peekerRetractTimeout);
+      peekerRetractTimeout = setTimeout(() => {
+        hideActivePeeker();
+      }, 2200);
+    });
+  });
+
+  // Start peeker loop: initial peek after 1.8s, then every 5.5s
+  setTimeout(() => {
+    triggerRandomPeeker();
+    setInterval(() => {
+      triggerRandomPeeker();
+    }, 5500);
+  }, 1800);
 
   // ==========================================================================
   // Minimal, Gentle Particle Canvas (8 tiny subtle particles only)
@@ -1037,6 +1178,7 @@
   function evadeNoButton(e) {
     if (!noBtn) return;
     initAudio();
+    if (!isMusicPlaying) startBackgroundMusic();
 
     // Trigger character reaction, facial expression change, speech bubble, and YES growth
     updateCharacterOnNoAttempt();
@@ -1142,6 +1284,7 @@
 
   function handleStartTest() {
     initAudio();
+    if (!isMusicPlaying) startBackgroundMusic();
     playCelebrationFanfare();
     launchConfetti(window.innerWidth / 2, window.innerHeight * 0.5, 45);
 

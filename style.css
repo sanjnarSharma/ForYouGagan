@@ -36,6 +36,45 @@ html, body {
   touch-action: manipulation;
 }
 
+/* Dreamy Background Ambient Glows & Clouds */
+body::before {
+  content: '';
+  position: fixed;
+  top: -80px;
+  left: -80px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 182, 193, 0.32) 0%, rgba(255, 240, 245, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: floatCloudLeft 16s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -80px;
+  right: -80px;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 209, 220, 0.35) 0%, rgba(255, 240, 245, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: floatCloudRight 18s ease-in-out infinite alternate;
+}
+
+@keyframes floatCloudLeft {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(45px, 50px) scale(1.1); }
+}
+
+@keyframes floatCloudRight {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-50px, -45px) scale(1.08); }
+}
+
 /* Background Canvases */
 .bg-canvas,
 .celebration-canvas {
@@ -87,6 +126,97 @@ html, body {
 .badge-heart {
   display: inline-block;
   animation: heartPulse 1.4s ease infinite;
+}
+
+.music-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chorus-jump-btn {
+  background: rgba(255, 240, 245, 0.95);
+  border: 1.5px solid #FF85A1;
+  color: var(--deep-rose);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 51, 102, 0.12);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chorus-jump-btn:hover {
+  background: #FF1E56;
+  color: #FFFFFF;
+  border-color: #FF1E56;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 30, 86, 0.35);
+}
+
+.chorus-jump-btn:active {
+  transform: scale(0.96);
+}
+
+.volume-slider-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-soft);
+  padding: 6px 12px;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
+
+.vol-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 68px;
+  height: 5px;
+  border-radius: 5px;
+  background: #FFCCD5;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #FF1E56;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(255, 30, 86, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #FF1E56;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(255, 30, 86, 0.4);
 }
 
 .sound-toggle-btn {
@@ -184,6 +314,229 @@ html, body {
 .music-toast.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Autoplay Unmute Floating Banner */
+.autoplay-unmute-banner {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid #FF85A1;
+  padding: 9px 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(255, 51, 102, 0.22);
+  z-index: 1000;
+  cursor: pointer;
+  animation: bannerBounce 2.4s ease-in-out infinite alternate;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.autoplay-unmute-banner.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.autoplay-unmute-banner.dismissed {
+  opacity: 0 !important;
+  transform: translateX(-50%) translateY(-24px) scale(0.92) !important;
+  pointer-events: none !important;
+}
+
+.banner-pulse-heart {
+  font-size: 1.15rem;
+  animation: heartPulse 1.2s ease infinite;
+}
+
+.banner-text {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--deep-rose);
+  letter-spacing: 0.01em;
+}
+
+.banner-close {
+  font-size: 0.85rem;
+  color: #A37F85;
+  margin-left: 4px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.banner-close:hover {
+  background: #FFE5EC;
+  color: var(--deep-rose);
+}
+
+@keyframes bannerBounce {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(-6px); }
+}
+
+/* ==========================================================================
+   Peeker Wall Animals System ("Behind the Wall" Kawaii Creatures)
+   ========================================================================== */
+.peeker-system {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 85;
+  overflow: hidden;
+}
+
+.peeker-animal {
+  position: fixed;
+  width: 130px;
+  height: 140px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  will-change: transform;
+  filter: drop-shadow(0 8px 24px rgba(255, 75, 114, 0.25));
+  user-select: none;
+}
+
+.peeker-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transition: transform 0.2s ease;
+}
+
+.peeker-animal:hover .peeker-svg {
+  transform: scale(1.08);
+}
+
+.peeker-animal:active .peeker-svg {
+  transform: scale(0.95);
+}
+
+/* 1. Left Wall: Bunny */
+.peeker-left {
+  left: 0;
+  top: 42%;
+  transform: translateX(-105%) rotate(-12deg);
+}
+
+.peeker-left.active {
+  transform: translateX(-18px) rotate(0deg);
+}
+
+.peeker-left .peeker-bubble {
+  left: 85px;
+  top: 15px;
+}
+
+/* 2. Right Wall: Kitten */
+.peeker-right {
+  right: 0;
+  top: 38%;
+  transform: translateX(105%) rotate(12deg);
+}
+
+.peeker-right.active {
+  transform: translateX(18px) rotate(0deg);
+}
+
+.peeker-right .peeker-bubble {
+  right: 85px;
+  top: 15px;
+}
+
+/* 3. Bottom Wall: Teddy Bear */
+.peeker-bottom {
+  bottom: 0;
+  left: calc(50% - 65px);
+  transform: translateY(105%);
+}
+
+.peeker-bottom.active {
+  transform: translateY(18px);
+}
+
+.peeker-bottom .peeker-bubble {
+  left: 50%;
+  transform: translateX(-50%);
+  top: -30px;
+}
+
+/* 4. Top Wall: Panda */
+.peeker-top {
+  top: 0;
+  right: 16%;
+  transform: translateY(-105%);
+}
+
+.peeker-top.active {
+  transform: translateY(-12px);
+}
+
+.peeker-top .peeker-bubble {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -28px;
+}
+
+/* 5. Corner Wall: Fox */
+.peeker-corner-left {
+  bottom: 0;
+  left: 0;
+  transform: translate(-105%, 105%) rotate(-25deg);
+}
+
+.peeker-corner-left.active {
+  transform: translate(-8px, 12px) rotate(-6deg);
+}
+
+.peeker-corner-left .peeker-bubble {
+  left: 70px;
+  top: 0px;
+}
+
+/* Peeker Speech & Heart Bubble */
+.peeker-bubble {
+  position: absolute;
+  background: #FFFFFF;
+  border: 1.5px solid #FF85A1;
+  border-radius: 16px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #4A3337;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(255, 75, 114, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+}
+
+.peeker-animal.active .peeker-bubble {
+  opacity: 1;
+}
+
+/* Floating Heart pop on click */
+.peeker-heart-pop {
+  position: fixed;
+  font-size: 1.4rem;
+  pointer-events: none;
+  z-index: 9999;
+  animation: peekerHeartFloat 1.2s ease-out forwards;
+}
+
+@keyframes peekerHeartFloat {
+  0% { transform: scale(0.6) translateY(0); opacity: 1; }
+  50% { transform: scale(1.3) translateY(-30px); opacity: 1; }
+  100% { transform: scale(1) translateY(-60px); opacity: 0; }
 }
 
 /* Main Container Layout */

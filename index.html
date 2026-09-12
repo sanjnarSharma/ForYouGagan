@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>A Little Test for You ❤️ | For Gagan from Sanjana</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>">
+
+  <!-- Google Fonts: Nunito (cute rounded), Caveat (warm handwriting), Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background Particle Canvases (Minimal, subtle, non-distracting) -->
+  <canvas id="ambientCanvas" class="bg-canvas"></canvas>
+  <canvas id="confettiCanvas" class="celebration-canvas"></canvas>
+
+  <!-- Optional custom audio file (fallback to built-in music-box) -->
+  <audio id="bgMusicAudio" loop preload="auto">
+    <source src="assets/music.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- Top bar: Creator Badge & Romantic Music Controller -->
+  <header class="top-nav">
+    <div class="creator-badge">
+      <span class="badge-icon">✨</span>
+      <span class="badge-text">Sanjana's special test for <strong>Gagan</strong></span>
+      <span class="badge-heart">❤️</span>
+    </div>
+    
+    <button class="sound-toggle-btn playing" id="soundToggle" title="Play or Pause Romantic Song" aria-label="Toggle Sound">
+      <div class="music-wave" id="musicWave">
+        <span class="music-bar b1"></span>
+        <span class="music-bar b2"></span>
+        <span class="music-bar b3"></span>
+      </div>
+      <span id="soundIcon">🎵</span>
+      <span class="sound-label" id="soundLabel">Music: Playing</span>
+    </button>
+  </header>
+
+  <!-- Floating Music Toast Notification -->
+  <div class="music-toast" id="musicToast">
+    <span>🎵 Now Playing: Sanjana & Gagan's Romantic Song 💕</span>
+  </div>
+
+  <!-- Main Experience Wrapper -->
+  <main class="app-container" id="appContainer">
+
+    <!-- ==========================================================================
+         STAGE 1: The Intro Invitation Card
+         ========================================================================== -->
+    <section class="stage-section active" id="introStage">
+      <div class="intro-card">
+        
+        <!-- Cute Interactive Speech Bubble for the Kawaii Bear -->
+        <div class="character-speech-bubble" id="charBubble">
+          <span class="bubble-icon" id="bubbleIcon">🌸</span>
+          <span class="bubble-text" id="bubbleText">Hi Gagan! Ready for my test? 🌸</span>
+        </div>
+
+        <!-- Cute Kawaii Bear Holding Secret Envelope with Dynamic Facial Expressions -->
+        <div class="intro-illustration-box" id="introIllustrationBox">
+          <svg viewBox="0 0 200 190" class="mini-illus-svg" id="bearSvg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="furGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFFDF9" />
+                <stop offset="100%" stop-color="#F7ECE1" />
+              </linearGradient>
+              <linearGradient id="earPink" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFCCD5" />
+                <stop offset="100%" stop-color="#FFB3C1" />
+              </linearGradient>
+              <linearGradient id="tearGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#BAE6FD" />
+                <stop offset="100%" stop-color="#38BDF8" />
+              </linearGradient>
+            </defs>
+            <!-- Bear Ears -->
+            <circle cx="58" cy="52" r="22" fill="url(#furGrad)" stroke="#E3D1C3" stroke-width="2"/>
+            <circle cx="58" cy="52" r="13" fill="url(#earPink)"/>
+            <circle cx="142" cy="52" r="22" fill="url(#furGrad)" stroke="#E3D1C3" stroke-width="2"/>
+            <circle cx="142" cy="52" r="13" fill="url(#earPink)"/>
+            <!-- Body -->
+            <rect x="46" y="58" width="108" height="106" rx="54" fill="url(#furGrad)" stroke="#E3D1C3" stroke-width="2"/>
+
+            <!-- FACE 0: NORMAL (Sweet smile & rosy cheeks) -->
+            <g id="faceNormal" class="bear-face">
+              <!-- Eyes -->
+              <ellipse cx="80" cy="96" rx="6.5" ry="8.5" fill="#3D2B2E"/>
+              <circle cx="78" cy="92" r="3" fill="#FFFFFF"/>
+              <ellipse cx="120" cy="96" rx="6.5" ry="8.5" fill="#3D2B2E"/>
+              <circle cx="118" cy="92" r="3" fill="#FFFFFF"/>
+              <!-- Nose & mouth -->
+              <ellipse cx="100" cy="102" rx="3.5" ry="2.5" fill="#FF8BA7"/>
+              <path d="M 94 106 Q 97 110 100 107 Q 103 110 106 106" fill="none" stroke="#3D2B2E" stroke-width="2" stroke-linecap="round"/>
+              <!-- Cheeks -->
+              <ellipse cx="68" cy="106" rx="10" ry="6" fill="#FF85A1" opacity="0.6"/>
+              <ellipse cx="132" cy="106" rx="10" ry="6" fill="#FF85A1" opacity="0.6"/>
+            </g>
+
+            <!-- FACE 1: CURIOUS / SUSPICIOUS (Raised brows, sideways looking eyes, 'o' mouth) -->
+            <g id="faceCurious" class="bear-face hidden-face">
+              <!-- Curious raised brows -->
+              <path d="M 72 81 Q 79 76 86 80" fill="none" stroke="#664E44" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M 114 80 Q 121 75 128 79" fill="none" stroke="#664E44" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- Eyes looking sideways at escaping NO button -->
+              <ellipse cx="83" cy="96" rx="6.5" ry="8" fill="#3D2B2E"/>
+              <circle cx="85" cy="93" r="2.8" fill="#FFFFFF"/>
+              <ellipse cx="123" cy="96" rx="6.5" ry="8" fill="#3D2B2E"/>
+              <circle cx="125" cy="93" r="2.8" fill="#FFFFFF"/>
+              <!-- Nose -->
+              <ellipse cx="100" cy="102" rx="3.5" ry="2.5" fill="#FF8BA7"/>
+              <!-- Small 'o' mouth -->
+              <ellipse cx="100" cy="109" rx="3.5" ry="4.5" fill="#FF6B8B" stroke="#3D2B2E" stroke-width="1.8"/>
+              <!-- Cheeks -->
+              <ellipse cx="68" cy="106" rx="9" ry="5.5" fill="#FF85A1" opacity="0.6"/>
+              <ellipse cx="132" cy="106" rx="9" ry="5.5" fill="#FF85A1" opacity="0.6"/>
+              <!-- Question mark -->
+              <text x="146" y="68" font-size="20" font-weight="900" fill="#FF4D6D">?</text>
+            </g>
+
+            <!-- FACE 2: PLEADING (Giant puppy eyes, quivering mouth, sweatdrop) -->
+            <g id="facePleading" class="bear-face hidden-face">
+              <!-- Worried brows -->
+              <path d="M 72 84 Q 80 88 88 86" fill="none" stroke="#664E44" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M 112 86 Q 120 88 128 84" fill="none" stroke="#664E44" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- Giant glossy puppy eyes -->
+              <ellipse cx="79" cy="95" rx="9.5" ry="11" fill="#2B1E21"/>
+              <circle cx="76" cy="91" r="4.5" fill="#FFFFFF"/>
+              <circle cx="83" cy="98" r="2.2" fill="#FFFFFF"/>
+              <circle cx="76" cy="100" r="1.4" fill="#FFFFFF"/>
+              <ellipse cx="121" cy="95" rx="9.5" ry="11" fill="#2B1E21"/>
+              <circle cx="118" cy="91" r="4.5" fill="#FFFFFF"/>
+              <circle cx="125" cy="98" r="2.2" fill="#FFFFFF"/>
+              <circle cx="118" cy="100" r="1.4" fill="#FFFFFF"/>
+              <!-- Nose -->
+              <ellipse cx="100" cy="102" rx="3.5" ry="2.5" fill="#FF8BA7"/>
+              <!-- Quivering wavy mouth -->
+              <path d="M 93 110 Q 96 107 100 110 Q 104 107 107 110" fill="none" stroke="#3D2B2E" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- Heavy blush -->
+              <ellipse cx="66" cy="108" rx="11" ry="7" fill="#FF4D6D" opacity="0.65"/>
+              <ellipse cx="134" cy="108" rx="11" ry="7" fill="#FF4D6D" opacity="0.65"/>
+              <!-- Sweatdrop -->
+              <path d="M 142 80 C 142 76 146 72 146 72 C 146 72 150 76 150 80 C 150 83 146 85 146 85 C 146 85 142 83 142 80 Z" fill="#38BDF8"/>
+            </g>
+
+            <!-- FACE 3: CRYING (Anime waterfall tears streaming down, crying mouth) -->
+            <g id="faceCrying" class="bear-face hidden-face">
+              <!-- Squeezed sad eyes (> <) -->
+              <path d="M 72 92 L 80 97 L 72 102" fill="none" stroke="#3D2B2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 128 92 L 120 97 L 128 102" fill="none" stroke="#3D2B2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Waterfall tears -->
+              <path d="M 79 99 Q 75 120 77 146" fill="none" stroke="url(#tearGrad)" stroke-width="6.5" stroke-linecap="round"/>
+              <path d="M 121 99 Q 125 120 123 146" fill="none" stroke="url(#tearGrad)" stroke-width="6.5" stroke-linecap="round"/>
+              <!-- Tear splashes -->
+              <circle cx="75" cy="148" r="4" fill="#38BDF8"/>
+              <circle cx="125" cy="148" r="4" fill="#38BDF8"/>
+              <circle cx="68" cy="142" r="2.8" fill="#BAE6FD"/>
+              <circle cx="132" cy="142" r="2.8" fill="#BAE6FD"/>
+              <!-- Crying open mouth -->
+              <path d="M 93 107 Q 100 120 107 107 Z" fill="#FF4D6D" stroke="#3D2B2E" stroke-width="2"/>
+              <!-- Nose -->
+              <ellipse cx="100" cy="102" rx="3.5" ry="2.5" fill="#FF8BA7"/>
+              <!-- Flushed cheeks -->
+              <ellipse cx="66" cy="107" rx="10" ry="6" fill="#FF3366" opacity="0.6"/>
+              <ellipse cx="134" cy="107" rx="10" ry="6" fill="#FF3366" opacity="0.6"/>
+            </g>
+
+            <!-- FACE 4: ANGRY / POUTING (Furrowed brows, puffed red cheeks, grumpy pout, steam) -->
+            <g id="faceAngry" class="bear-face hidden-face">
+              <!-- Furrowed angry brows -->
+              <path d="M 71 83 L 87 91" fill="none" stroke="#3D2B2E" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M 129 83 L 113 91" fill="none" stroke="#3D2B2E" stroke-width="3.2" stroke-linecap="round"/>
+              <!-- Sharp glare eyes -->
+              <ellipse cx="80" cy="97" rx="5.5" ry="6" fill="#3D2B2E"/>
+              <circle cx="78" cy="94" r="1.8" fill="#FFFFFF"/>
+              <ellipse cx="120" cy="97" rx="5.5" ry="6" fill="#3D2B2E"/>
+              <circle cx="118" cy="94" r="1.8" fill="#FFFFFF"/>
+              <!-- Grumpy inverted pout mouth -->
+              <path d="M 94 110 Q 100 103 106 110" fill="none" stroke="#3D2B2E" stroke-width="2.6" stroke-linecap="round"/>
+              <!-- Deep angry red cheeks -->
+              <ellipse cx="66" cy="106" rx="12" ry="8" fill="#FF1E56" opacity="0.75"/>
+              <ellipse cx="134" cy="106" rx="12" ry="8" fill="#FF1E56" opacity="0.75"/>
+              <!-- Steam and anger symbols -->
+              <text x="32" y="66" font-size="18">💨</text>
+              <text x="146" y="66" font-size="18">💢</text>
+            </g>
+
+            <!-- FACE 5: SMUG / TEASING (Winking eye, cheeky tongue sticking out :P) -->
+            <g id="faceSmug" class="bear-face hidden-face">
+              <!-- Cheerful eyebrow -->
+              <path d="M 73 83 Q 80 80 87 84" fill="none" stroke="#664E44" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- Left eye: playful winking arc -->
+              <path d="M 72 97 Q 80 89 88 97" fill="none" stroke="#3D2B2E" stroke-width="3" stroke-linecap="round"/>
+              <!-- Right eye: big sparkle eye -->
+              <ellipse cx="120" cy="95" rx="7" ry="9" fill="#3D2B2E"/>
+              <circle cx="118" cy="91" r="3.2" fill="#FFFFFF"/>
+              <circle cx="123" cy="97" r="1.5" fill="#FFFFFF"/>
+              <!-- Nose -->
+              <ellipse cx="100" cy="102" rx="3.5" ry="2.5" fill="#FF8BA7"/>
+              <!-- Smile with tongue out :P -->
+              <path d="M 93 106 Q 100 110 107 106" fill="none" stroke="#3D2B2E" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 97 107 C 97 114 103 114 103 107 Z" fill="#FF4D6D" stroke="#3D2B2E" stroke-width="1.2"/>
+              <!-- Cheeks -->
+              <ellipse cx="68" cy="106" rx="10" ry="6" fill="#FF85A1" opacity="0.7"/>
+              <ellipse cx="132" cy="106" rx="10" ry="6" fill="#FF85A1" opacity="0.7"/>
+              <!-- Confident sparkles -->
+              <text x="142" y="68" font-size="18">✨</text>
+            </g>
+
+            <!-- Love letter envelope held in paws -->
+            <g transform="translate(62, 116)">
+              <rect x="0" y="0" width="76" height="50" rx="6" fill="#FFF5F7" stroke="#FF85A1" stroke-width="2"/>
+              <path d="M 2 2 L 38 28 L 74 2" fill="none" stroke="#FF85A1" stroke-width="2"/>
+              <circle cx="38" cy="27" r="8" fill="#FF1E56"/>
+              <text id="envelopeHeart" x="38" y="31" font-size="9" text-anchor="middle" fill="#FFFFFF">❤️</text>
+            </g>
+            <!-- Paws -->
+            <circle cx="58" cy="138" r="10" fill="url(#furGrad)" stroke="#E3D1C3" stroke-width="2"/>
+            <circle cx="142" cy="138" r="10" fill="url(#furGrad)" stroke="#E3D1C3" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="intro-badge">💌 For Gagan's Eyes Only</div>
+        <h1 class="intro-headline">A Little Test for You ❤️</h1>
+
+        <div class="intro-text-box">
+          <p class="intro-lead">
+            Okay Gagan, before I tell you something,<br />
+            I want you to answer a few questions honestly.
+          </p>
+          <div class="rule-box">
+            <p>No smart answers and no <em>“I don't know.”</em> 😂</p>
+            <p class="rule-strong"><strong>I want your real answers.</strong></p>
+          </div>
+        </div>
+
+        <!-- Action Buttons Area: YES and Runaway NO -->
+        <div class="buttons-playground" id="buttonsPlayground">
+          <div class="buttons-container">
+            <!-- YES Button: Big, Attractive, Stationary, Pulsing -->
+            <button class="btn btn-yes" id="yesBtn" aria-label="Yes, I will take the test!">
+              <span class="btn-sparkle-left">✨</span>
+              <span class="btn-text">YES ❤️</span>
+              <span class="btn-sparkle-right">✨</span>
+            </button>
+
+            <!-- NO Button: Elusive, Playful, Dynamic, Escapes mouse -->
+            <button class="btn btn-no" id="noBtn" aria-label="No">
+              <span class="btn-text" id="noBtnText">NO 😭</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="playful-hint">(Psst Gagan... only one button actually works! 😉)</p>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STAGE 2: Interactive Love Postcard Deck (Questions 1 to 11)
+         ========================================================================== -->
+    <section class="stage-section hidden" id="questionsStage">
+      <div class="deck-container">
+        
+        <!-- Top Deck Progress -->
+        <div class="deck-progress-bar">
+          <button class="deck-nav-btn prev-btn" id="prevCardBtn" title="Previous Question">← Back</button>
+          <div class="deck-counter">
+            <span class="heart-pulse-icon">💖</span>
+            <span id="currentCardNum">1</span> / 11
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width: 9.09%;"></div>
+          </div>
+        </div>
+
+        <!-- The Active Question Card Display -->
+        <div class="postcard-card" id="postcardCard">
+          
+          <!-- Decorative Stamp -->
+          <div class="card-stamp" id="cardStamp">💌</div>
+          
+          <!-- Cute Custom Romantic Illustration for this question -->
+          <div class="question-art-box" id="questionArtBox">
+            <!-- Dynamically populated SVG based on question -->
+          </div>
+
+          <!-- Question Text Area -->
+          <div class="question-details">
+            <div class="q-tag" id="qTag">Question 1</div>
+            <h2 class="q-title" id="qTitle">What do you like the most about me?</h2>
+            <p class="q-note" id="qNote">Be specific. And please don't say “everything.” 😌</p>
+          </div>
+
+          <!-- Answer Input Note -->
+          <div class="q-input-wrap">
+            <textarea class="deck-textarea" id="deckTextarea" rows="3" placeholder="Type your honest answer here, Gagan... ✍️"></textarea>
+          </div>
+
+          <!-- Card Actions -->
+          <div class="card-footer-actions">
+            <span class="autosave-hint">✨ Saved automatically</span>
+            <button class="btn btn-primary btn-next-card" id="nextCardBtn">
+              <span id="nextBtnText">Next Note 💌</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STAGE 3: The Promotion Card
+         ========================================================================== -->
+    <section class="stage-section hidden" id="promotionStage">
+      <div class="promotion-envelope-card">
+        
+        <div class="promo-illus-box">
+          <svg viewBox="0 0 120 120" class="mini-illus-svg" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="24" width="80" height="76" rx="14" fill="#FFFFFF" stroke="#FF85A1" stroke-width="2.5"/>
+            <rect x="32" y="38" width="38" height="6" rx="3" fill="#FF85A1"/>
+            <rect x="32" y="50" width="56" height="4" rx="2" fill="#EAD9CD"/>
+            <rect x="32" y="60" width="48" height="4" rx="2" fill="#EAD9CD"/>
+            <rect x="32" y="70" width="52" height="4" rx="2" fill="#EAD9CD"/>
+            <!-- Cute Approved Heart Stamp -->
+            <circle cx="82" cy="74" r="16" fill="#FF1E56"/>
+            <text x="82" y="78" font-size="12" text-anchor="middle" fill="#FFFFFF">❤️</text>
+            <!-- Little tie or ribbon -->
+            <path d="M 60 16 L 68 28 L 60 36 L 52 28 Z" fill="#FF3366"/>
+          </svg>
+        </div>
+
+        <div class="intro-badge">💼 Official Application</div>
+        <h2 class="promo-heading">Okay… that's enough questions. 😂</h2>
+
+        <div class="promo-letter-body">
+          <p>I actually have one more thing to ask.</p>
+          <p>You are a really good friend…</p>
+          <p class="promo-highlight">But I think I want a little promotion now. 😌</p>
+          <p>Because honestly…<br />Being just your friend is getting a little boring. 😂</p>
+          <p class="promo-upgrade">So I think it's time for an upgrade.</p>
+          <p class="promo-applying">And yes…<br /><strong>I am applying for the position. ❤️</strong></p>
+        </div>
+
+        <button class="btn btn-primary" id="viewFinalQuestionBtn">
+          <span>Review Sanjana's Application 👀</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STAGE 4: The Final Question (Girlfriend)
+         ========================================================================== -->
+    <section class="stage-section hidden" id="finalQuestionStage">
+      <div class="final-q-container">
+        
+        <div class="final-header">
+          <div class="final-badge">❤️ THE FINAL QUESTION ❤️</div>
+          <h1 class="final-title">Gagan, will you let me be your girlfriend?</h1>
+          <p class="final-instruction">Please select your official response below: 👇</p>
+        </div>
+
+        <!-- 5 Stamped Love Tickets -->
+        <div class="tickets-stack" id="ticketsStack">
+          
+          <button class="ticket-btn" data-choice="Yes ❤️">
+            <span class="ticket-stamp">☐</span>
+            <span class="ticket-label">Yes ❤️</span>
+          </button>
+
+          <button class="ticket-btn" data-choice="Obviously yes">
+            <span class="ticket-stamp">☐</span>
+            <span class="ticket-label">Obviously yes</span>
+          </button>
+
+          <button class="ticket-btn" data-choice="Finally, you asked">
+            <span class="ticket-stamp">☐</span>
+            <span class="ticket-label">Finally, you asked</span>
+          </button>
+
+          <button class="ticket-btn" data-choice="Come here, girlfriend. 🥹">
+            <span class="ticket-stamp">☐</span>
+            <span class="ticket-label">Come here, girlfriend. 🥹</span>
+          </button>
+
+          <button class="ticket-btn" data-choice="I thought you would never ask 😂">
+            <span class="ticket-stamp">☐</span>
+            <span class="ticket-label">I thought you would never ask 😂</span>
+          </button>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STAGE 5: Sanjana's Sincere Confession Letter
+         ========================================================================== -->
+    <section class="stage-section hidden" id="confessionStage">
+      
+      <!-- Celebratory Banner -->
+      <div class="celebrate-banner">
+        <span class="confetti-emojis">🎉 💖 🥳 🌸</span>
+        <h2 class="approved-text">Application Approved! 💕</h2>
+        <p class="approved-sub">Sanjana is officially your girlfriend now! 🥹</p>
+      </div>
+
+      <!-- Handwritten Romantic Parchment -->
+      <div class="parchment-letter">
+        <div class="letter-post-stamp">💌</div>
+        <div class="letter-wax-drop">💖</div>
+
+        <div class="parchment-content">
+          <h2 class="letter-title">Okay, now seriously…</h2>
+
+          <p class="letter-lead">I just want to tell you something.</p>
+
+          <p class="letter-lead-strong">
+            <strong>I’m really, really, really proud of you.</strong>
+          </p>
+
+          <p>
+            You work so hard, and I genuinely admire that about you.
+          </p>
+
+          <p>
+            I know you have your own responsibilities, your own goals and so many things to manage, and I’m really happy to see you working so hard for your future.
+          </p>
+
+          <p class="lucky-highlight">
+            And honestly…<br />
+            <strong>I feel very lucky to have you in my life.</strong>
+          </p>
+
+          <p>
+            You are very handsome, of course…<br />
+            but that's not the only reason I like you.
+          </p>
+
+          <p class="emphasis-confess">
+            I like you.
+          </p>
+
+          <div class="little-things-card">
+            <div class="lt-item">🌸 Your nature.</div>
+            <div class="lt-item">🌸 Your calmness.</div>
+            <div class="lt-item">🌸 Your little habits.</div>
+            <div class="lt-item">🌸 The way you are.</div>
+            <p class="lt-footer">All those little things that make you who you are.</p>
+          </div>
+
+          <p>
+            I don't know exactly when it happened.
+          </p>
+
+          <p>
+            But somewhere between all our conversations, little moments, silly things and everything we've shared…
+          </p>
+
+          <p class="realised-p">
+            <strong>I realised that I really like you.</strong>
+          </p>
+
+          <p>
+            I don't want to make this a big dramatic “I love you” confession.
+          </p>
+
+          <p>
+            I just want to be honest with you.
+          </p>
+
+          <div class="final-love-declaration">
+            <p class="decl-1">I like you. ❤️</p>
+            <p class="decl-2">And yes… <em>I really, really like you.</em></p>
+          </div>
+
+          <div class="parchment-author">
+            With all my love,<br />
+            <span class="sanjana-handwriting">— Sanjana 💕</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Panel: Send Answers to Sanjana -->
+      <div class="answers-export-card">
+        <h3>💌 Send Your Answers to Sanjana</h3>
+        <p>Send what you wrote for the 11 questions directly to Sanjana on WhatsApp so she can read your thoughts! 😌</p>
+
+        <div class="export-buttons-row">
+          <button class="btn btn-whatsapp" id="sendWhatsappBtn">
+            <span>Send via WhatsApp 💬</span>
+          </button>
+          <button class="btn btn-copy" id="copyAnswersBtn">
+            <span id="copyBtnText">Copy My Answers 📋</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Final footer note -->
+      <p class="closing-footer-note">
+        This little website was made with a lot of love, just for you. ❤️
+      </p>
+
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -21,9 +21,9 @@
   <canvas id="ambientCanvas" class="bg-canvas"></canvas>
   <canvas id="confettiCanvas" class="celebration-canvas"></canvas>
 
-  <!-- Optional custom audio file (fallback to built-in music-box) -->
-  <audio id="bgMusicAudio" loop preload="auto">
-    <source src="assets/music.mp3" type="audio/mp3">
+  <!-- Background Song: Vaaroon (Mirzapur) - Direct Chorus Edit (Autoplay at full volume) -->
+  <audio id="bgMusicAudio" loop autoplay preload="auto" src="assets/vaaroon_chorus.mp3">
+    <source src="assets/vaaroon_chorus.mp3" type="audio/mpeg">
   </audio>
 
   <!-- Top bar: Creator Badge & Romantic Music Controller -->
@@ -34,20 +34,186 @@
       <span class="badge-heart">❤️</span>
     </div>
     
-    <button class="sound-toggle-btn playing" id="soundToggle" title="Play or Pause Romantic Song" aria-label="Toggle Sound">
-      <div class="music-wave" id="musicWave">
-        <span class="music-bar b1"></span>
-        <span class="music-bar b2"></span>
-        <span class="music-bar b3"></span>
+    <div class="music-nav-controls">
+      <button class="sound-toggle-btn playing" id="soundToggle" title="Play or Pause Vaaroon (Mirzapur)" aria-label="Toggle Sound">
+        <div class="music-wave" id="musicWave">
+          <span class="music-bar b1"></span>
+          <span class="music-bar b2"></span>
+          <span class="music-bar b3"></span>
+        </div>
+        <span id="soundIcon">🎵</span>
+        <span class="sound-label" id="soundLabel">Vaaroon: Playing</span>
+      </button>
+
+      <button class="chorus-jump-btn" id="chorusJumpBtn" title="Replay the 'Vaaroon Vaaroon' Chorus" aria-label="Replay Chorus">
+        ⏮️ Replay Chorus
+      </button>
+
+      <div class="volume-slider-box" title="Music Volume">
+        <span class="vol-icon" id="volIcon">🔊</span>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1" class="volume-slider" aria-label="Music Volume">
       </div>
-      <span id="soundIcon">🎵</span>
-      <span class="sound-label" id="soundLabel">Music: Playing</span>
-    </button>
+    </div>
   </header>
+
+  <!-- Floating Tap-Anywhere Music Banner (Auto-dismisses on first tap/click) -->
+  <div class="autoplay-unmute-banner" id="autoplayBanner">
+    <span class="banner-pulse-heart">🎵</span>
+    <span class="banner-text">Tap anywhere to enjoy with music 💕</span>
+    <span class="banner-close" id="bannerClose" aria-label="Close banner">✕</span>
+  </div>
 
   <!-- Floating Music Toast Notification -->
   <div class="music-toast" id="musicToast">
-    <span>🎵 Now Playing: Sanjana & Gagan's Romantic Song 💕</span>
+    <span>🎵 Now Playing: "Vaaroon" (Chorus) - Mirzapur 💕</span>
+  </div>
+
+  <!-- ==========================================================================
+       Interactive Peeking Animals ("Behind the Wall" Kawaii Creatures)
+       ========================================================================== -->
+  <div class="peeker-system" id="peekerSystem">
+
+    <!-- 1. Bunny Peeking from Left Wall -->
+    <div class="peeker-animal peeker-left" id="peekerBunny" data-animal="bunny" title="Click me! 🐰">
+      <div class="peeker-bubble" id="bunnyBubble">Psst... Gagan! 🐰</div>
+      <svg viewBox="0 0 120 140" class="peeker-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ears -->
+        <ellipse cx="44" cy="38" rx="13" ry="36" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5" transform="rotate(-12 44 38)"/>
+        <ellipse cx="44" cy="38" rx="7" ry="24" fill="#FFCCD5" transform="rotate(-12 44 38)"/>
+        <ellipse cx="84" cy="36" rx="13" ry="36" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5" transform="rotate(12 84 36)"/>
+        <ellipse cx="84" cy="36" rx="7" ry="24" fill="#FFCCD5" transform="rotate(12 84 36)"/>
+        <!-- Head -->
+        <circle cx="65" cy="85" r="42" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <!-- Eyes -->
+        <ellipse cx="48" cy="82" rx="5.5" ry="7.5" fill="#3D2B2E"/>
+        <circle cx="46" cy="79" r="2.5" fill="#FFFFFF"/>
+        <ellipse cx="78" cy="82" rx="5.5" ry="7.5" fill="#3D2B2E"/>
+        <circle cx="76" cy="79" r="2.5" fill="#FFFFFF"/>
+        <!-- Nose & mouth -->
+        <polygon points="63,89 67,89 65,92" fill="#FF85A1"/>
+        <path d="M 61 94 Q 65 97 69 94" fill="none" stroke="#3D2B2E" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Cheeks -->
+        <ellipse cx="38" cy="90" rx="8" ry="5" fill="#FF85A1" opacity="0.65"/>
+        <ellipse cx="88" cy="90" rx="8" ry="5" fill="#FF85A1" opacity="0.65"/>
+        <!-- Paws resting on screen wall -->
+        <circle cx="28" cy="116" r="10" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2"/>
+        <circle cx="92" cy="116" r="10" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2"/>
+        <!-- Heart in paws -->
+        <path d="M 60 115 C 57 108 48 108 46 116 C 44 124 55 132 60 136 C 65 132 76 124 74 116 C 72 108 63 108 60 115 Z" fill="#FF1E56"/>
+      </svg>
+    </div>
+
+    <!-- 2. Kitten Peeking from Right Wall -->
+    <div class="peeker-animal peeker-right" id="peekerKitten" data-animal="kitten" title="Click me! 🐱">
+      <div class="peeker-bubble" id="kittenBubble">Click YES! 🐱❤️</div>
+      <svg viewBox="0 0 130 130" class="peeker-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cat Ears -->
+        <polygon points="30,55 18,15 55,35" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <polygon points="32,48 24,24 48,36" fill="#FFB3C1"/>
+        <polygon points="95,35 132,15 120,55" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <polygon points="102,36 126,24 118,48" fill="#FFB3C1"/>
+        <!-- Head -->
+        <circle cx="75" cy="68" r="42" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <!-- Wink & sparkling eye -->
+        <path d="M 52 66 Q 60 60 68 66" fill="none" stroke="#3D2B2E" stroke-width="2.8" stroke-linecap="round"/>
+        <ellipse cx="94" cy="65" rx="6" ry="8" fill="#3D2B2E"/>
+        <circle cx="92" cy="62" r="3" fill="#FFFFFF"/>
+        <!-- Nose & mouth -->
+        <polygon points="73,73 77,73 75,76" fill="#FF85A1"/>
+        <path d="M 70 78 Q 75 82 80 78" fill="none" stroke="#3D2B2E" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Whiskers -->
+        <path d="M 38 72 L 20 70 M 38 76 L 18 78" stroke="#D1B8AC" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M 112 72 L 130 70 M 112 76 L 132 78" stroke="#D1B8AC" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Cheeks -->
+        <ellipse cx="48" cy="76" rx="8" ry="5" fill="#FF85A1" opacity="0.65"/>
+        <ellipse cx="102" cy="76" rx="8" ry="5" fill="#FF85A1" opacity="0.65"/>
+        <!-- Paws resting on right edge -->
+        <circle cx="45" cy="104" r="11" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2"/>
+        <circle cx="105" cy="104" r="11" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <!-- 3. Teddy Bear Peeking from Bottom Wall -->
+    <div class="peeker-animal peeker-bottom" id="peekerBear" data-animal="bear" title="Click me! 🐻">
+      <div class="peeker-bubble" id="bearBubble">Sanjana likes you! 🐻💕</div>
+      <svg viewBox="0 0 140 120" class="peeker-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bear Ears -->
+        <circle cx="36" cy="38" r="18" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <circle cx="36" cy="38" r="10" fill="#FFCCD5"/>
+        <circle cx="104" cy="38" r="18" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <circle cx="104" cy="38" r="10" fill="#FFCCD5"/>
+        <!-- Head -->
+        <circle cx="70" cy="65" r="44" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <!-- Eyes -->
+        <ellipse cx="52" cy="62" rx="5.5" ry="7.5" fill="#3D2B2E"/>
+        <circle cx="50" cy="59" r="2.5" fill="#FFFFFF"/>
+        <ellipse cx="88" cy="62" rx="5.5" ry="7.5" fill="#3D2B2E"/>
+        <circle cx="86" cy="59" r="2.5" fill="#FFFFFF"/>
+        <!-- Nose & smiling mouth -->
+        <ellipse cx="70" cy="70" rx="4" ry="3" fill="#FF8BA7"/>
+        <path d="M 64 74 Q 70 78 76 74" fill="none" stroke="#3D2B2E" stroke-width="2" stroke-linecap="round"/>
+        <!-- Cheeks -->
+        <ellipse cx="40" cy="72" rx="9" ry="5.5" fill="#FF85A1" opacity="0.65"/>
+        <ellipse cx="100" cy="72" rx="9" ry="5.5" fill="#FF85A1" opacity="0.65"/>
+        <!-- Paws over bottom edge -->
+        <circle cx="35" cy="100" r="12" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2"/>
+        <circle cx="105" cy="100" r="12" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <!-- 4. Cute Panda Peeking from Top Wall -->
+    <div class="peeker-animal peeker-top" id="peekerPanda" data-animal="panda" title="Click me! 🐼">
+      <div class="peeker-bubble" id="pandaBubble">Peek-a-boo! 🐼✨</div>
+      <svg viewBox="0 0 130 120" class="peeker-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Panda Ears -->
+        <circle cx="32" cy="85" r="16" fill="#3D2B2E"/>
+        <circle cx="98" cy="85" r="16" fill="#3D2B2E"/>
+        <!-- Head -->
+        <circle cx="65" cy="55" r="42" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="2.5"/>
+        <!-- Eye Patches -->
+        <ellipse cx="48" cy="56" rx="11" ry="9" fill="#3D2B2E" transform="rotate(-15 48 56)"/>
+        <circle cx="49" cy="56" r="3" fill="#FFFFFF"/>
+        <ellipse cx="82" cy="56" rx="11" ry="9" fill="#3D2B2E" transform="rotate(15 82 56)"/>
+        <circle cx="81" cy="56" r="3" fill="#FFFFFF"/>
+        <!-- Nose & mouth -->
+        <ellipse cx="65" cy="46" rx="3.5" ry="2.5" fill="#3D2B2E"/>
+        <path d="M 60 40 Q 65 36 70 40" fill="none" stroke="#3D2B2E" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Cheeks -->
+        <ellipse cx="36" cy="50" rx="8" ry="5" fill="#FF85A1" opacity="0.65"/>
+        <ellipse cx="94" cy="50" rx="8" ry="5" fill="#FF85A1" opacity="0.65"/>
+      </svg>
+    </div>
+
+    <!-- 5. Tiny Fox Peeking from Corner Wall -->
+    <div class="peeker-animal peeker-corner-left" id="peekerFox" data-animal="fox" title="Click me! 🦊">
+      <div class="peeker-bubble" id="foxBubble">You two are cute! 🦊💖</div>
+      <svg viewBox="0 0 120 120" class="peeker-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fox Ears -->
+        <polygon points="25,50 15,10 50,32" fill="#FFA570" stroke="#E58348" stroke-width="2"/>
+        <polygon points="27,44 20,20 44,32" fill="#FFFDF9"/>
+        <polygon points="85,32 120,10 110,50" fill="#FFA570" stroke="#E58348" stroke-width="2"/>
+        <polygon points="91,32 115,20 108,44" fill="#FFFDF9"/>
+        <!-- Head -->
+        <circle cx="68" cy="65" r="38" fill="#FFA570" stroke="#E58348" stroke-width="2"/>
+        <!-- White muzzle -->
+        <path d="M 38 68 Q 68 95 98 68 C 98 88, 38 88, 38 68 Z" fill="#FFFDF9"/>
+        <!-- Eyes -->
+        <ellipse cx="48" cy="60" rx="4.5" ry="6.5" fill="#3D2B2E"/>
+        <circle cx="47" cy="58" r="2" fill="#FFFFFF"/>
+        <ellipse cx="88" cy="60" rx="4.5" ry="6.5" fill="#3D2B2E"/>
+        <circle cx="87" cy="58" r="2" fill="#FFFFFF"/>
+        <!-- Nose & smile -->
+        <polygon points="65,78 71,78 68,82" fill="#3D2B2E"/>
+        <path d="M 64 84 Q 68 87 72 84" fill="none" stroke="#3D2B2E" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Cheeks -->
+        <ellipse cx="40" cy="72" rx="7" ry="4" fill="#FF85A1" opacity="0.7"/>
+        <ellipse cx="96" cy="72" rx="7" ry="4" fill="#FF85A1" opacity="0.7"/>
+        <!-- Paws -->
+        <circle cx="34" cy="98" r="9" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="1.8"/>
+        <circle cx="102" cy="98" r="9" fill="#FFFDF9" stroke="#E5D4C7" stroke-width="1.8"/>
+      </svg>
+    </div>
+
   </div>
 
   <!-- Main Experience Wrapper -->
@@ -470,7 +636,7 @@
           </p>
 
           <p>
-            I don't want to make this a big dramatic “I love you” confession.
+            I don't want to make this a big dramatic confession.
           </p>
 
           <p>
@@ -483,7 +649,7 @@
           </div>
 
           <div class="parchment-author">
-            With all my love,<br />
+            With all my heart,<br />
             <span class="sanjana-handwriting">— Sanjana 💕</span>
           </div>
         </div>
@@ -506,7 +672,7 @@
 
       <!-- Final footer note -->
       <p class="closing-footer-note">
-        This little website was made with a lot of love, just for you. ❤️
+        This little website was made specially for you, Gagan. ❤️
       </p>
 
     </section>
